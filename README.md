@@ -1,5 +1,5 @@
 # Vue JS
-
+CDN = <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 ## I 핵심
 ### 1. SPA
 Single Page Application
