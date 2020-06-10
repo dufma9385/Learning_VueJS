@@ -32,6 +32,18 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script>
+    const todoStorage = {
+        //저장(create)
+        save(todos){
+            localStorage.setItem('todos', JSON.stringify(todos))
+        },
+        fetch(){
+            return JSON.parse(localStorage.getItem('todos'))
+        }
+        //조회(Read)
+    }
+
+    // -> todoStorage.save(todos)
     const app = new Vue({
       el: '#app',
       data: {
@@ -40,10 +52,6 @@
         status: 'showAll', // showCompleted, showIncomplete
         newInput: '',
         todos: [
-          {id: 1, content: 'Vue JS 복습', isCompleted: false},
-          {id: 2, content: 'JS 복습', isCompleted: true}, 
-          {id: 3, content: '코딩 테스트 준비', isCompleted: false}, 
-          {id: 4, content: 'Node JS 복습', isCompleted: false}
         ]
       },
       computed: {
@@ -66,9 +74,12 @@
           // 입력값이 있을 때만,
           if (this.newInput) {
             this.todos.push({
-              id: new Date(), // 구분할 수 있는 숫자를 id에 추가
+              id: this.todos.length, // 구분할 수 있는 숫자를 id에 추가
               content: this.newInput, 
               isCompleted: false
+            })
+            window.localStorage.setItem('todos', {
+                
             })
             this.newInput = ''
           } else {
@@ -80,9 +91,19 @@
           // 배열을 한번씩 순회하며, 무언가를 하는 거
           // 무언가 => 함수(콜백)
           this.todos = this.todos.filter(todo => !todo.isCompleted)
+        }        
+      },
+      watch:{
+            todos: {
+                handler: function(todos) {
+                    // todos가 변경되면 아래가 실행됩니다.
+                    todoStorage.save(todos)
+                }
+            }
         },
-        
-      }
+        created() {
+            this.todos = todoStorage.fetch()
+        }
     })
   </script>
 </body>
